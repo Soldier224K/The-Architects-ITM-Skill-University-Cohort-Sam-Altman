@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Architects | ITM Skill University | Cohort Sam Altman</title>
+    <link rel="icon" href="https://formfees.com/wp-content/uploads/2021/12/ITM-Business-School-Logo.png" type="image/png">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amita:wght@400;700&family=JetBrains+Mono:wght@400;700&family=Questrial&family=Space+Grotesk:wght@300;500;700&display=swap');
+
+        :root {
+            --neon-red: #cf0a2c;
+            --neon-gold: #fea903;
+            --dark-bg: #030303;
+            --panel-bg: rgba(12, 12, 12, 0.95);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
+            --text-dim: #a0a0a0;
+            --font-head: 'Space Grotesk', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+            --font-quote: 'Amita', serif;
+            --font-hero: 'Questrial', sans-serif;
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0;
+            box-sizing: border-box; 
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-main);
+            font-family: var(--font-head);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background: 
+                radial-gradient(120vw 100vh at 50% -10%, rgba(207, 10, 44, 0.12) 0%, transparent 60%),
+                radial-gradient(100vw 100vh at 100% 100%, rgba(254, 169, 3, 0.06) 0%, transparent 50%),
+                var(--dark-bg);
+            background-attachment: fixed;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(207, 10, 44, 0.6);
+            border-radius: 10px;
+        }
+
+        header {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .header-bg-marquee {
+            position: absolute;
+            inset: -30%;
+            z-index: 0;
+            transform: rotate(-15deg) scale(1.2);
+            display: flex;
+            flex-direction: column;
+            gap: 2vw;
+            opacity: 0.15;
+            pointer-events: none;
+            filter: blur(2px);
+        }
+
+        .marquee-row {
+            display: flex;
+            gap: 2vw;
+            width: max-content;
+            animation: scroll-left 50s linear infinite;
+        }
+
+        .marquee-row.reverse {
+            animation: scroll-right 60s linear infinite;
+            transform: translateX(-50%);
+        }
+
+        .marquee-img {
+            width: clamp(100px, 12vw, 250px);
+            aspect-ratio: 1;
+            border-radius: 50%;
+            object-fit: cover;
+            filter: grayscale(100%);
+        }
+
+        .header-overlay {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(3,3,3,0.6) 0%, rgba(3,3,3,1) 100%);
+            z-index: 1;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 20px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .uni-logo {
+            width: 200px;
+            height: auto;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease forwards;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+        }
+
+        .uni-title {
+            font-family: var(--font-hero);
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            color: var(--text-dim);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            animation: slideDown 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .hero-tag {
+            font-family: var(--font-code);
+            color: var(--neon-gold);
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
+            margin-bottom: 30px;
+            letter-spacing: 6px;
+            background: rgba(254, 169, 3, 0.05);
+            padding: 10px 25px;
+            border-radius: 50px;
+            border: 1px solid rgba(254, 169, 3, 0.3);
+            animation: slideDown 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .main-title {
+            font-family: var(--font-hero);
+            font-size: clamp(3.5rem, 10vw, 8rem);
+            line-height: 0.9;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            color: var(--text-main);
+            margin-bottom: 25px;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            animation: scaleReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .main-title span { 
+            color: var(--neon-red);
+            text-shadow: 0 0 20px rgba(207, 10, 44, 0.4);
+        }
+
+        .hero-desc {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--text-dim);
+            max-width: 800px;
+            margin-bottom: 30px;
+            line-height: 1.8;
+            animation: fadeIn 2s ease forwards 0.5s;
+            opacity: 0;
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1px;
+            background: var(--border-color);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            z-index: 5;
+        }
+
+        .stat-item {
+            background: rgba(8, 8, 8, 0.9);
+            padding: 50px 20px;
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            background: var(--dark-bg);
+            box-shadow: 0 10px 30px rgba(207, 10, 44, 0.2);
+            border-bottom: 2px solid var(--neon-red);
+            z-index: 2;
+        }
+
+        .stat-item h3 {
+            font-family: var(--font-code);
+            font-size: 3.5rem;
+            color: var(--text-main);
+            margin-bottom: 5px;
+            line-height: 1;
+        }
+
+        .stat-item p {
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            color: var(--neon-gold);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .team-section {
+            padding: 120px 5vw;
+            position: relative;
+            z-index: 5;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            color: var(--text-main);
+            margin-bottom: 150px;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            font-family: var(--font-hero);
+        }
+
+        .section-title span {
+            color: var(--neon-red);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 160px 40px; 
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            width: 100%;
+            z-index: 1;
+        }
+
+        .card:hover {
+            z-index: 100;
+        }
+
+        .img-wrapper {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            position: relative;
+            z-index: 3; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            background: transparent;
+        }
+
+        .img-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--neon-red), var(--neon-gold));
+            z-index: -2;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .img-wrapper::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 50%;
+            background: var(--dark-bg);
+            z-index: -1;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            filter: grayscale(100%) brightness(0.7) contrast(1.2);
+            transition: all 0.5s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-details {
+            position: absolute;
+            top: 100px; 
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110%;
+            max-width: 340px;
+            z-index: 1; 
+            background: var(--panel-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 120px 25px 30px 25px; 
+            text-align: center;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+        }
+
+        .card-details h3 {
+            font-family: var(--font-hero);
+            font-size: 1.5rem;
+            color: var(--text-main);
+            line-height: 1.2;
+            margin: 0;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .links-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 0;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.4s ease;
+            margin-top: 0;
+        }
+
+        .card-details a {
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            padding: 14px 20px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-details a::after {
+            content: '↗';
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+            opacity: 0.5;
+        }
+
+        .card:hover .img-wrapper {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(207, 10, 44, 0.3);
+        }
+
+        .card:hover .img-wrapper::before {
+            opacity: 1;
+        }
+
+        .card:hover .card-img {
+            filter: grayscale(0%) brightness(1.1) contrast(1.1);
+        }
+
+        .card:hover .card-details {
+            transform: translateX(-50%) translateY(20px);
+            border-color: rgba(254, 169, 3, 0.4);
+            background: rgba(10, 10, 10, 0.98);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.9);
+        }
+
+        .card:hover .card-details h3 {
+            color: var(--neon-gold);
+        }
+
+        .card:hover .links-container {
+            max-height: 200px;
+            opacity: 1;
+            transform: translateY(0);
+            margin-top: 25px;
+        }
+
+        .card-details a:hover {
+            background: var(--neon-red);
+            color: #fff;
+            border-color: var(--neon-red);
+            font-weight: 700;
+            box-shadow: 0 0 20px rgba(207, 10, 44, 0.4);
+        }
+
+        .card-details a:hover::after {
+            transform: translate(3px, -3px);
+            opacity: 1;
+        }
+
+        footer {
+            padding: 80px 20px;
+            text-align: center;
+            background: #000;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-family: var(--font-code);
+            font-size: 1rem;
+            color: var(--text-dim);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        footer span {
+            color: var(--neon-gold);
+        }
+
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes scroll-right {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes scaleReveal {
+            0% { opacity: 0; transform: scale(0.9) translateY(40px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        @keyframes slideDown {
+            0% { opacity: 0; transform: translateY(-30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; filter: blur(5px); }
+            100% { opacity: 1; filter: blur(0); }
+        }
+
+        @media screen and (max-width: 768px) {
+            .grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 140px 20px; }
+            .stat-item { padding: 40px 20px; }
+            .stat-item h3 { font-size: 3rem; }
+            .img-wrapper { width: 160px; height: 160px; }
+            .card-details { top: 80px; padding-top: 100px; width: 105%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-bg-marquee">
+            <div class="marquee-row">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4D03AQFNpOanhoDUug/profile-displayphoto-crop_800_800/B4DZsYyeZ9HkAI-/0/1765647444848?e=1773273600&v=beta&t=bl0h0pR4dCYC9UyebvhJJGH2Z6R1yOIAo9dND7ybAdc" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D5603AQFQCwyyAqh0_Q/profile-displayphoto-crop_800_800/B56ZlT0IRdIsAQ-/0/1758047799953?e=1772668800&v=beta&t=qXEmzcPDg2P3ngLc3Hy3wq3JBr6dfS76gK5_tgIvsE8" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D5603AQFGrFWbOgOdyQ/profile-displayphoto-crop_800_800/B56Zr0y_flIYAI-/0/1765043600971?e=1772668800&v=beta&t=XdryxAkktxzvakSwXaTWUQR6J8EGjcYC5K7K4NQ9BUk" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4D03AQE-3hwXte1weA/profile-displayphoto-crop_800_800/B4DZqh8Ot7IAAQ-/0/1763653513597?e=1772668800&v=beta&t=LV-JrWzEBv-fjFIXjfLm5h_MTHl2x-gzYJ2VCBNe0sQ" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4E03AQEOAzvKuQoNDA/profile-displayphoto-shrink_400_400/B4EZeODqt9HYAg-/0/1750435016086?e=1773273600&v=beta&t=31xeOHXgPArAn2ee_xcQlUQjA01WKCJj4MpDuSLDuew" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D5603AQF3qMdvSmnwUg/profile-displayphoto-crop_800_800/B56ZrVRIX1HQAM-/0/1764514629767?e=1773273600&v=beta&t=Zfwt82HKRlRD8rGmnfI1Vsh-fTi2zN5_dBrkf8Dnbt0" alt="">
+                <img class="marquee-img" src="Pallavi.jpeg" alt="">
+                <img class="marquee-img" src="AmanKoli.jpeg" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4E03AQFoY5c3bqWHjA/profile-displayphoto-crop_800_800/B4EZp7xDzFJ0AM-/0/1763013052361?e=1772668800&v=beta&t=Q6_OJfKLCJQj_5H7-PY4iizBm_SipuaPimLsyoY4TiQ" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D5603AQGW0DbmJkkYYA/profile-displayphoto-crop_800_800/B56Zsm3YybJwAQ-/0/1765883613606?e=1772668800&v=beta&t=sVWy3J6kANjMIT332T3xELkynG8GftV6HVQC9YTLhB4" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4D03AQFNpOanhoDUug/profile-displayphoto-crop_800_800/B4DZsYyeZ9HkAI-/0/1765647444848?e=1773273600&v=beta&t=bl0h0pR4dCYC9UyebvhJJGH2Z6R1yOIAo9dND7ybAdc" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D5603AQFQCwyyAqh0_Q/profile-displayphoto-crop_800_800/B56ZlT0IRdIsAQ-/0/1758047799953?e=1772668800&v=beta&t=qXEmzcPDg2P3ngLc3Hy3wq3JBr6dfS76gK5_tgIvsE8" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D5603AQFGrFWbOgOdyQ/profile-displayphoto-crop_800_800/B56Zr0y_flIYAI-/0/1765043600971?e=1772668800&v=beta&t=XdryxAkktxzvakSwXaTWUQR6J8EGjcYC5K7K4NQ9BUk" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4D03AQE-3hwXte1weA/profile-displayphoto-crop_800_800/B4DZqh8Ot7IAAQ-/0/1763653513597?e=1772668800&v=beta&t=LV-JrWzEBv-fjFIXjfLm5h_MTHl2x-gzYJ2VCBNe0sQ" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4E03AQEOAzvKuQoNDA/profile-displayphoto-shrink_400_400/B4EZeODqt9HYAg-/0/1750435016086?e=1773273600&v=beta&t=31xeOHXgPArAn2ee_xcQlUQjA01WKCJj4MpDuSLDuew" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D5603AQF3qMdvSmnwUg/profile-displayphoto-crop_800_800/B56ZrVRIX1HQAM-/0/1764514629767?e=1773273600&v=beta&t=Zfwt82HKRlRD8rGmnfI1Vsh-fTi2zN5_dBrkf8Dnbt0" alt="">
+                <img class="marquee-img" src="Pallavi.jpeg" alt="">
+                <img class="marquee-img" src="AmanKoli.jpeg" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4E03AQFoY5c3bqWHjA/profile-displayphoto-crop_800_800/B4EZp7xDzFJ0AM-/0/1763013052361?e=1772668800&v=beta&t=Q6_OJfKLCJQj_5H7-PY4iizBm_SipuaPimLsyoY4TiQ" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D5603AQGW0DbmJkkYYA/profile-displayphoto-crop_800_800/B56Zsm3YybJwAQ-/0/1765883613606?e=1772668800&v=beta&t=sVWy3J6kANjMIT332T3xELkynG8GftV6HVQC9YTLhB4" alt="">
+            </div>
+            <div class="marquee-row reverse">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D5603AQHncTSF5EwQKw/profile-displayphoto-crop_800_800/B56ZsuBSFDKEAI-/0/1766003649295?e=1772668800&v=beta&t=n7SDNxpLMwgUs-ut9aOAiIZcm565iOMSPHK9HEvocoo" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4D35AQEWOzLkI-yvPw/profile-framedphoto-shrink_800_800/B4DZtp45uCI4Ak-/0/1767008083189?e=1771869600&v=beta&t=kAijajfMTUB2g-TgJ5LfgdLHRlkR1SUt7F4MsLdc_30" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4D03AQHRAOX8f3CDgA/profile-displayphoto-crop_800_800/B4DZnI6xlnHYAI-/0/1760012477138?e=1772668800&v=beta&t=iU90nkS4vTkioRnY1YZxPjf5w3QMI-KcUbXdcMs9Kqk" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4E03AQG-SsyJiy8FNQ/profile-displayphoto-crop_800_800/B4EZp4l94nJgAI-/0/1762959813467?e=1772668800&v=beta&t=kAZRDKXyFUkwlIUKLA_xjw2xzwVz4MoDILc6zg9By3U" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4E35AQGtDrFk9KqARw/profile-framedphoto-shrink_800_800/B4EZlJOHOOKoAg-/0/1757870060739?e=1771916400&v=beta&t=REUzLHQ4vMW8fGLJf5SMVgYX_gdLcZUsjEYdNXcscXc" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D5603AQHKvYlF2G_VUw/profile-displayphoto-crop_800_800/B56ZsmsNwuGsAI-/0/1765880693828?e=1772668800&v=beta&t=9wb4jZYbfBEl45bZJV_rz0tk8OZUA-1gs0sEzRcUpPw" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D5603AQHjOHEkl7nWIw/profile-displayphoto-crop_800_800/B56Zsm4Bk_IYAI-/0/1765883780383?e=1772668800&v=beta&t=H-MxKlBn0XGRzdgvISr-Sb3AfeA55JselLZkONTwp0I" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4D03AQFCRdQ-baTBWw/profile-displayphoto-crop_800_800/B4DZp8MAs3KUAI-/0/1763020116562?e=1772668800&v=beta&t=rE7LSSTiPm3sdvZss_roYqPMVklPeF0OvfON7r9_J_Y" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4D03AQG2SMiAUOatjQ/profile-displayphoto-crop_800_800/B4DZs121hjIgAI-/0/1766135127622?e=1772668800&v=beta&t=o_KYx0c7nDtHEkj-mpRd7E5Ah8pMcesHRM6eeICULgk" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D5635AQGbF-3WwLfSOA/profile-framedphoto-shrink_800_800/B56ZsxCGIvI0Ak-/0/1766054192032?e=1771916400&v=beta&t=aKbIgCJ0VJRAjc33dNvCJCuW0IGuW_kZ7VdOvbvJZqo" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D5603AQHncTSF5EwQKw/profile-displayphoto-crop_800_800/B56ZsuBSFDKEAI-/0/1766003649295?e=1772668800&v=beta&t=n7SDNxpLMwgUs-ut9aOAiIZcm565iOMSPHK9HEvocoo" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4D35AQEWOzLkI-yvPw/profile-framedphoto-shrink_800_800/B4DZtp45uCI4Ak-/0/1767008083189?e=1771869600&v=beta&t=kAijajfMTUB2g-TgJ5LfgdLHRlkR1SUt7F4MsLdc_30" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4D03AQHRAOX8f3CDgA/profile-displayphoto-crop_800_800/B4DZnI6xlnHYAI-/0/1760012477138?e=1772668800&v=beta&t=iU90nkS4vTkioRnY1YZxPjf5w3QMI-KcUbXdcMs9Kqk" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4E03AQG-SsyJiy8FNQ/profile-displayphoto-crop_800_800/B4EZp4l94nJgAI-/0/1762959813467?e=1772668800&v=beta&t=kAZRDKXyFUkwlIUKLA_xjw2xzwVz4MoDILc6zg9By3U" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4E35AQGtDrFk9KqARw/profile-framedphoto-shrink_800_800/B4EZlJOHOOKoAg-/0/1757870060739?e=1771916400&v=beta&t=REUzLHQ4vMW8fGLJf5SMVgYX_gdLcZUsjEYdNXcscXc" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D5603AQHKvYlF2G_VUw/profile-displayphoto-crop_800_800/B56ZsmsNwuGsAI-/0/1765880693828?e=1772668800&v=beta&t=9wb4jZYbfBEl45bZJV_rz0tk8OZUA-1gs0sEzRcUpPw" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D5603AQHjOHEkl7nWIw/profile-displayphoto-crop_800_800/B56Zsm4Bk_IYAI-/0/1765883780383?e=1772668800&v=beta&t=H-MxKlBn0XGRzdgvISr-Sb3AfeA55JselLZkONTwp0I" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4D03AQFCRdQ-baTBWw/profile-displayphoto-crop_800_800/B4DZp8MAs3KUAI-/0/1763020116562?e=1772668800&v=beta&t=rE7LSSTiPm3sdvZss_roYqPMVklPeF0OvfON7r9_J_Y" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4D03AQG2SMiAUOatjQ/profile-displayphoto-crop_800_800/B4DZs121hjIgAI-/0/1766135127622?e=1772668800&v=beta&t=o_KYx0c7nDtHEkj-mpRd7E5Ah8pMcesHRM6eeICULgk" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D5635AQGbF-3WwLfSOA/profile-framedphoto-shrink_800_800/B56ZsxCGIvI0Ak-/0/1766054192032?e=1771916400&v=beta&t=aKbIgCJ0VJRAjc33dNvCJCuW0IGuW_kZ7VdOvbvJZqo" alt="">
+            </div>
+            <div class="marquee-row">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4D03AQF63atVQcm8Uw/profile-displayphoto-crop_800_800/B4DZl3iRfbJEAI-/0/1758647099076?e=1772668800&v=beta&t=MJABMypPOq1_cAV5eynfV2zpHSY_C_9vKqix-xecCHY" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4D03AQH_ZbySbhiroA/profile-displayphoto-crop_800_800/B4DZom_t2CHsAM-/0/1761590830623?e=1772668800&v=beta&t=x_1-kfTylig2RKgHbBe6I3-b_5n-JOzaxkcsL6HRYxI" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D5603AQHbzUBztMJhLw/profile-displayphoto-crop_800_800/B56ZsszEKJIYAI-/0/1765983145532?e=1772668800&v=beta&t=XO6q5uj9WQfVmsaP45HdoKXGJpzudJjVm-5KxdEdNjs" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4E03AQH42EXt9VYm5w/profile-displayphoto-crop_800_800/B4EZkaA.d3IUAU-/0/1757078089170?e=1772668800&v=beta&t=hG_nxxaw-6NCySvuIyEUX2cM2PhilVtQch6S0e0r5DE" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4E03AQEXL3uhXqIbyA/profile-displayphoto-crop_800_800/B4EZrrCUJ4KkAI-/0/1764879847120?e=1772668800&v=beta&t=5lF09lIL4d1j1qTVJG7liftwzCwpyXS45PI5PQaTCFw" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D5603AQHN03-QlnAecw/profile-displayphoto-crop_800_800/B56ZsoC8bFG8AQ-/0/1765903421716?e=1772668800&v=beta&t=mDWwwUBi0yqtCCZ2KmxM7dA878eZI8p8zRLqKVcy7cQ" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4D03AQH7m5rELwxGeg/profile-displayphoto-crop_800_800/B4DZs3_6H5JkAI-/0/1766171064229?e=1772668800&v=beta&t=fVoVKKuTkPD2LIGY5G4x0JNh5Vd4eOXfWWZMkRVAwSg" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4D03AQF5YHOyV5RMgw/profile-displayphoto-crop_800_800/B4DZr7e6R7JAAI-/0/1765155776789?e=1772668800&v=beta&t=q5Bom2Qm-2gCjfF7QDrCrlSvh3AL3TUArAWMQNkFy28" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D5603AQFm9joV-xRyhQ/profile-displayphoto-crop_800_800/B56ZsyxNbdJsAI-/0/1766083320318?e=1772668800&v=beta&t=tz-8d9lVXhOMQqgdh7XwdMjQQFSyGIExqEDzErZtCPs" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4D03AQHcBUqQtQtuEA/profile-displayphoto-crop_800_800/B4DZwpCBeeIUAI-/0/1770214923062?e=1772668800&v=beta&t=THrm5Pyd7GkLYqhCjE7oIKoLN-KHiPCtOo9zlerpTco" alt="">
+                <img class="marquee-img" src="samarth.png" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D5603AQE5eI8s6yaCMA/profile-displayphoto-crop_800_800/B56Zsm0f2FJ8AM-/0/1765882860844?e=1772668800&v=beta&t=eoAY1JD88vQ3JpHxKV2Qmg9hJhCh3DKnMeQqfL8LX7I" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4D03AQHlAaL-oRqRwg/profile-displayphoto-crop_800_800/B4DZxqmcUTJkAI-/0/1771314991349?e=1772668800&v=beta&t=LXUruQiraANRvqL9OnQgLe8tX90wApvzDDuSSZsErDY" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4D03AQE-tqt-0M6X4w/profile-displayphoto-crop_800_800/B4DZxq4inVJkAM-/0/1771319735444?e=1772668800&v=beta&t=CXYHOJYmcAm0AcdKFPvNeu7oVgnWHbZxEJKJWHOcyyM" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4D03AQF63atVQcm8Uw/profile-displayphoto-crop_800_800/B4DZl3iRfbJEAI-/0/1758647099076?e=1772668800&v=beta&t=MJABMypPOq1_cAV5eynfV2zpHSY_C_9vKqix-xecCHY" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4D03AQH_ZbySbhiroA/profile-displayphoto-crop_800_800/B4DZom_t2CHsAM-/0/1761590830623?e=1772668800&v=beta&t=x_1-kfTylig2RKgHbBe6I3-b_5n-JOzaxkcsL6HRYxI" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D5603AQHbzUBztMJhLw/profile-displayphoto-crop_800_800/B56ZsszEKJIYAI-/0/1765983145532?e=1772668800&v=beta&t=XO6q5uj9WQfVmsaP45HdoKXGJpzudJjVm-5KxdEdNjs" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4E03AQH42EXt9VYm5w/profile-displayphoto-crop_800_800/B4EZkaA.d3IUAU-/0/1757078089170?e=1772668800&v=beta&t=hG_nxxaw-6NCySvuIyEUX2cM2PhilVtQch6S0e0r5DE" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D4E03AQEXL3uhXqIbyA/profile-displayphoto-crop_800_800/B4EZrrCUJ4KkAI-/0/1764879847120?e=1772668800&v=beta&t=5lF09lIL4d1j1qTVJG7liftwzCwpyXS45PI5PQaTCFw" alt="">
+                <img class="marquee-img" src="https://media.licdn.com/dms/image/v2/D5603AQHN03-QlnAecw/profile-displayphoto-crop_800_800/B56ZsoC8bFG8AQ-/0/1765903421716?e=1772668800&v=beta&t=mDWwwUBi0yqtCCZ2KmxM7dA878eZI8p8zRLqKVcy7cQ" alt="">
+            </div>
+        </div>
+
+        <div class="header-overlay"></div>
+
+        <div class="header-content">
+            <img class="uni-logo" src="image.png" alt="ITM Skill University">
+            <h2 class="uni-title">ITM Skill University, Navi Mumbai</h2>
+            <div class="hero-tag">&lt; BTECH CSE BATCH 2025 /&gt;</div>
+            <h1 class="main-title">Cohort<br><span>Sam Altman.</span></h1>
+            <p class="hero-desc">We are a collective of thinkers, builders, and full-stack engineers defining the next era of digital logic. Showcasing a specialized exploration into the unique and rarely used capabilities of HTML.</p>
+        </div>
+    </header>
+
+    <section class="stats-bar">
+        <div class="stat-item">
+            <h3>45</h3>
+            <p>Active Nodes</p>
+        </div>
+        <div class="stat-item">
+            <h3>4YR</h3>
+            <p>Compile Time</p>
+        </div>
+        <div class="stat-item">
+            <h3>∞</h3>
+            <p>Lines of Code</p>
+        </div>
+        <div class="stat-item">
+            <h3>100%</h3>
+            <p>System Uptime</p>
+        </div>
+    </section>
+
+    <section class="team-section">
+        <h2 class="section-title">The <span>Unit</span></h2>
+        
+        <div class="grid">
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D4D03AQFNpOanhoDUug/profile-displayphoto-crop_800_800/B4DZsYyeZ9HkAI-/0/1765647444848?e=1773273600&v=beta&t=bl0h0pR4dCYC9UyebvhJJGH2Z6R1yOIAo9dND7ybAdc" alt="Kartik Wagh">
+                </div>
+                <div class="card-details">
+                    <h3>Kartik Wagh</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/kartikwagh21/HTML-Assignment" target="_blank">Github Link</a>
+                        <a href="https://kartikwagh21.github.io/Unique-Tag-HTML/" target="_blank">Live Demo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D5603AQFQCwyyAqh0_Q/profile-displayphoto-crop_800_800/B56ZlT0IRdIsAQ-/0/1758047799953?e=1772668800&v=beta&t=qXEmzcPDg2P3ngLc3Hy3wq3JBr6dfS76gK5_tgIvsE8" alt="Tejas Chavan">
+                </div>
+                <div class="card-details">
+                    <h3>Tejas Chavan</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/2025tejasc-ctrl/UNIQUE-CODE" target="_blank">Github Link</a>
+                        <a href="https://2025tejasc-ctrl.github.io/UNIQUE-CODE/" target="_blank">Live Demo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D5603AQFGrFWbOgOdyQ/profile-displayphoto-crop_800_800/B56Zr0y_flIYAI-/0/1765043600971?e=1772668800&v=beta&t=XdryxAkktxzvakSwXaTWUQR6J8EGjcYC5K7K4NQ9BUk" alt="Prince Yadav">
+                </div>
+                <div class="card-details">
+                    <h3>Prince Yadav</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/2025prince-control/unique-html-tag.git" target="_blank">Github Link</a>
+                        <a href="https://2025prince-control.github.io/unique-html-tag/" target="_blank">Live Demo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D4D03AQE-3hwXte1weA/profile-displayphoto-crop_800_800/B4DZqh8Ot7IAAQ-/0/1763653513597?e=1772668800&v=beta&t=LV-JrWzEBv-fjFIXjfLm5h_MTHl2x-gzYJ2VCBNe0sQ" alt="Saksham Gharat">
+                </div>
+                <div class="card-details">
+                    <h3>Saksham Gharat</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/saksham-gharat" target="_blank">Github Link</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D4E03AQEOAzvKuQoNDA/profile-displayphoto-shrink_400_400/B4EZeODqt9HYAg-/0/1750435016086?e=1773273600&v=beta&t=31xeOHXgPArAn2ee_xcQlUQjA01WKCJj4MpDuSLDuew" alt="Raj Rasal">
+                </div>
+                <div class="card-details">
+                    <h3>Raj Rasal</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/Soldier224K/HTML-RarelyUsedTags.git" target="_blank">Github Link</a>
+                        <a href="Research.html" target="_blank">Live Demo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D5603AQF3qMdvSmnwUg/profile-displayphoto-crop_800_800/B56ZrVRIX1HQAM-/0/1764514629767?e=1773273600&v=beta&t=Zfwt82HKRlRD8rGmnfI1Vsh-fTi2zN5_dBrkf8Dnbt0" alt="Ajit Singh">
+                </div>
+                <div class="card-details">
+                    <h3>Ajit Singh</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/ajit-builds/HTML/blob/main/09_Uniquetags.html" target="_blank">Github Link</a>
+                        <a href="https://html-gamma-henna.vercel.app/" target="_blank">Live Demo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="Pallavi.jpeg" alt="Pallavi Sarovar">
+                </div>
+                <div class="card-details">
+                    <h3>Pallavi Sarovar</h3>
+                    <div class="links-container">
+                        <a href="https://github.com" target="_blank">Github Link</a>
+                    </div>
+                </div>    
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="AmanKoli.jpeg" alt="Aman Koli">
+                </div>
+                <div class="card-details">
+                    <h3>Aman Koli</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/amankoli09/HTML-Practice-Page/tree/main/Ruby%20Tag" target="_blank">Github Link</a>
+                        <a href="https://ruby-tag-lx3q.vercel.app/" target="_blank">Live Demo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D4E03AQFoY5c3bqWHjA/profile-displayphoto-crop_800_800/B4EZp7xDzFJ0AM-/0/1763013052361?e=1772668800&v=beta&t=Q6_OJfKLCJQj_5H7-PY4iizBm_SipuaPimLsyoY4TiQ" alt="Adity Kadam">
+                </div>
+                <div class="card-details">
+                    <h3>Aditya Kadam</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/AdityaK9822/Unique-Tags" target="_blank">Github Link</a>
+                        <a href="https://adityak9822.github.io/Unique-Tag/" target="_blank">Live Demo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D5603AQGW0DbmJkkYYA/profile-displayphoto-crop_800_800/B56Zsm3YybJwAQ-/0/1765883613606?e=1772668800&v=beta&t=sVWy3J6kANjMIT332T3xELkynG8GftV6HVQC9YTLhB4" alt="Dhruv Chavda">
+                </div>
+                <div class="card-details">
+                    <h3>Dhruv Chavda</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/DhruvC-2938/Unique_HTML_Tags.git" target="_blank">Github Link</a>
+                        <a href="https://dhruvc-2938.github.io/Unique_HTML_Tags/" target="_blank">Live Demo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D5603AQHncTSF5EwQKw/profile-displayphoto-crop_800_800/B56ZsuBSFDKEAI-/0/1766003649295?e=1772668800&v=beta&t=n7SDNxpLMwgUs-ut9aOAiIZcm565iOMSPHK9HEvocoo" alt="Tanay Shelar">
+                </div>
+                <div class="card-details">
+                    <h3>Tanay Shelar</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/Soldier224K/HTML-RarelyUsedTags.git" target="_blank">Github Link</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D4D35AQEWOzLkI-yvPw/profile-framedphoto-shrink_800_800/B4DZtp45uCI4Ak-/0/1767008083189?e=1771869600&v=beta&t=kAijajfMTUB2g-TgJ5LfgdLHRlkR1SUt7F4MsLdc_30" alt="Daksh Ghandat">
+                </div>
+                <div class="card-details">
+                    <h3>Daksh Ghandat</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/2025dakshg-svg/unique-html-tag.git" target="_blank">Github Link</a>
+                        <a href="https://2025dakshg-svg.github.io/unique-html-tag/" target="_blank">Live Demo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D4D03AQHRAOX8f3CDgA/profile-displayphoto-crop_800_800/B4DZnI6xlnHYAI-/0/1760012477138?e=1772668800&v=beta&t=iU90nkS4vTkioRnY1YZxPjf5w3QMI-KcUbXdcMs9Kqk" alt="Mohammed Saad Mulla">
+                </div>
+                <div class="card-details">
+                    <h3>Mohammed Saad Mulla</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/saadmulla82/HTML-New-Tags.git" target="_blank">Github Link</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D4E03AQG-SsyJiy8FNQ/profile-displayphoto-crop_800_800/B4EZp4l94nJgAI-/0/1762959813467?e=1772668800&v=beta&t=kAZRDKXyFUkwlIUKLA_xjw2xzwVz4MoDILc6zg9By3U" alt="Atharva Dalvi">
+                </div>
+                <div class="card-details">
+                    <h3>Atharva Dalvi</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/Antaraaaa14/html-basics/blob/main/task.html" target="_blank">Github Link</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D4E35AQGtDrFk9KqARw/profile-framedphoto-shrink_800_800/B4EZlJOHOOKoAg-/0/1757870060739?e=1771916400&v=beta&t=REUzLHQ4vMW8fGLJf5SMVgYX_gdLcZUsjEYdNXcscXc" alt="Shubham Mane">
+                </div>
+                <div class="card-details">
+                    <h3>Shubham Mane</h3>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D5603AQHKvYlF2G_VUw/profile-displayphoto-crop_800_800/B56ZsmsNwuGsAI-/0/1765880693828?e=1772668800&v=beta&t=9wb4jZYbfBEl45bZJV_rz0tk8OZUA-1gs0sEzRcUpPw" alt="Pratik Swain">
+                </div>
+                <div class="card-details">
+                    <h3>Pratik Swain</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/pratikswain070-blip/Unique-HTML-tags" target="_blank">Github Link</a>
+                        <a href="https://pratikswain070-blip.github.io/Unique-HTML-tags-task1/" target="_blank">Live Demo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D5603AQHjOHEkl7nWIw/profile-displayphoto-crop_800_800/B56Zsm4Bk_IYAI-/0/1765883780383?e=1772668800&v=beta&t=H-MxKlBn0XGRzdgvISr-Sb3AfeA55JselLZkONTwp0I" alt="Mahek Yadav">
+                </div>
+                <div class="card-details">
+                    <h3>Mahek Yadav</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/mahek-yadav/Research-Task.git" target="_blank">Github Link</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D4D03AQFCRdQ-baTBWw/profile-displayphoto-crop_800_800/B4DZp8MAs3KUAI-/0/1763020116562?e=1772668800&v=beta&t=rE7LSSTiPm3sdvZss_roYqPMVklPeF0OvfON7r9_J_Y" alt="Pranav Nair">
+                </div>
+                <div class="card-details">
+                    <h3>Pranav Nair</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/PranavNair2007" target="_blank">Github Link</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D4D03AQG2SMiAUOatjQ/profile-displayphoto-crop_800_800/B4DZs121hjIgAI-/0/1766135127622?e=1772668800&v=beta&t=o_KYx0c7nDtHEkj-mpRd7E5Ah8pMcesHRM6eeICULgk" alt="Ashish Kumar">
+                </div>
+                <div class="card-details">
+                    <h3>Ashish Kumar</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/foggypants/HTML-PRACTICE" target="_blank">Github Link</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D5635AQGbF-3WwLfSOA/profile-framedphoto-shrink_800_800/B56ZsxCGIvI0Ak-/0/1766054192032?e=1771916400&v=beta&t=aKbIgCJ0VJRAjc33dNvCJCuW0IGuW_kZ7VdOvbvJZqo" alt="Kaushal Rajmandai">
+                </div>
+                <div class="card-details">
+                    <h3>Kaushal Rajmandai</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/kaushalrajmandai" target="_blank">Github Link</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D4D03AQF63atVQcm8Uw/profile-displayphoto-crop_800_800/B4DZl3iRfbJEAI-/0/1758647099076?e=1772668800&v=beta&t=MJABMypPOq1_cAV5eynfV2zpHSY_C_9vKqix-xecCHY" alt="Aditya Yadav">
+                </div>
+                <div class="card-details">
+                    <h3>Aditya Yadav</h3>
+                    <div class="links-container">
+                        <a href=" https://aditya-yadav-75.github.io/Rare_HTML_TAGS/" target="_blank">Live Demo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D4D03AQH_ZbySbhiroA/profile-displayphoto-crop_800_800/B4DZom_t2CHsAM-/0/1761590830623?e=1772668800&v=beta&t=x_1-kfTylig2RKgHbBe6I3-b_5n-JOzaxkcsL6HRYxI" alt="Manan Jain">
+                </div>
+                <div class="card-details">
+                    <h3>Manan Jain</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/mananjain20/HTML-Tags-" target="_blank">Github Link</a>
+                        <a href="https://mananjain20.github.io/HTML-Tags-/" target="_blank">Live Demo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D5603AQHbzUBztMJhLw/profile-displayphoto-crop_800_800/B56ZsszEKJIYAI-/0/1765983145532?e=1772668800&v=beta&t=XO6q5uj9WQfVmsaP45HdoKXGJpzudJjVm-5KxdEdNjs" alt="Dharmit Sathvara">
+                </div>
+                <div class="card-details">
+                    <h3>Dharmit Sathvara</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/dharmitsathvara29-max/uniquetag-html" target="_blank">Github Link</a>
+                        <a href="https://dharmitsathvara29-max.github.io/uniquetag-html/" target="_blank">Live Demo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D4D03AQGHVzvMMJAnhQ/profile-displayphoto-crop_800_800/B4DZx2bP2qIYAI-/0/1771513381810?e=1773273600&v=beta&t=UonwdVjfsswp7pUxXVQVMTJuqnOk4MrLroJsQXph0ts" alt="Kunwar Bhosle">
+                </div>
+                <div class="card-details">
+                    <h3>Kunwar Bhosle</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/kunwarbhosle07/HTML_Rare-Tags" target="_blank">Github Link</a>
+                        <a href="https://github.com/kunwarbhosle07/HTML_Rare-Tags" target="_blank">Live Demo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D4E03AQEXL3uhXqIbyA/profile-displayphoto-crop_800_800/B4EZrrCUJ4KkAI-/0/1764879847120?e=1772668800&v=beta&t=5lF09lIL4d1j1qTVJG7liftwzCwpyXS45PI5PQaTCFw" alt="Harsh Kumar">
+                </div>
+                <div class="card-details">
+                    <h3>Harsh Kumar</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/harsh4421/HTML_CSS/tree/main/Unique-HTML-Tags" target="_blank">Github Link</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D5603AQHN03-QlnAecw/profile-displayphoto-crop_800_800/B56ZsoC8bFG8AQ-/0/1765903421716?e=1772668800&v=beta&t=mDWwwUBi0yqtCCZ2KmxM7dA878eZI8p8zRLqKVcy7cQ" alt="Antara Palwankar">
+                </div>
+                <div class="card-details">
+                    <h3>Antara Palwankar</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/Antaraaaa14/html-basics/blob/main/task.html" target="_blank">Github Link</a>
+                        <a href="https://unique-html-tags.vercel.app/" target="_blank">Live Demo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D4D03AQH7m5rELwxGeg/profile-displayphoto-crop_800_800/B4DZs3_6H5JkAI-/0/1766171064229?e=1772668800&v=beta&t=fVoVKKuTkPD2LIGY5G4x0JNh5Vd4eOXfWWZMkRVAwSg" alt="Janmesh Rohida">
+                </div>
+                <div class="card-details">
+                    <h3>Janmesh Rohida</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/janmesh16/Task-HTML_CSS/tree/main" target="_blank">Github Link</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D4D03AQF5YHOyV5RMgw/profile-displayphoto-crop_800_800/B4DZr7e6R7JAAI-/0/1765155776789?e=1772668800&v=beta&t=q5Bom2Qm-2gCjfF7QDrCrlSvh3AL3TUArAWMQNkFy28" alt="Aditya Chouksey">
+                </div>
+                <div class="card-details">
+                    <h3>Aditya Chouksey</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/Adityac17/HTML-CSS.git" target="_blank">Github Link</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D5603AQFm9joV-xRyhQ/profile-displayphoto-crop_800_800/B56ZsyxNbdJsAI-/0/1766083320318?e=1772668800&v=beta&t=tz-8d9lVXhOMQqgdh7XwdMjQQFSyGIExqEDzErZtCPs" alt="Shankar Mupanna">
+                </div>
+                <div class="card-details">
+                    <h3>Shankar Mupanna</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/shankara11y/Rare-Tags" target="_blank">Github Link</a>
+                        <a href="https://shankara11y.github.io/Rare-Tags/" target="_blank">Live Demo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D4D03AQHcBUqQtQtuEA/profile-displayphoto-crop_800_800/B4DZwpCBeeIUAI-/0/1770214923062?e=1772668800&v=beta&t=THrm5Pyd7GkLYqhCjE7oIKoLN-KHiPCtOo9zlerpTco" alt="Tanmay Sherkar">
+                </div>
+                <div class="card-details">
+                    <h3>Tanmay Sherkar</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/tanmay01-D3V/FULL-STACK-DEV/blob/main/HTML%205%20%26%20CSS%203/Unique.html" target="_blank">Github Link</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D5603AQHqQufObsSyWA/profile-displayphoto-crop_800_800/B56ZroIk0dHkAI-/0/1764831155928?e=1772668800&v=beta&t=mm32d_vzx8p6hmTAfvzzqQkMzZ5RZgtrEUG4MvIdLAY" alt="Ashutosh Pawar">
+                </div>
+                <div class="card-details">
+                    <h3>Ashutosh Pawar</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/AASHPAW1015/clg/tree/main/hTML/new/uniquehtml" target="_blank">Github Link</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="samarth.png" alt="Samarth Navale">
+                </div>
+                <div class="card-details">
+                    <h3>Samarth Navale</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/Samarth-ITM/HTMLCODES/tree/main/16Feb" target="_blank">Github Link</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D5603AQE5eI8s6yaCMA/profile-displayphoto-crop_800_800/B56Zsm0f2FJ8AM-/0/1765882860844?e=1772668800&v=beta&t=eoAY1JD88vQ3JpHxKV2Qmg9hJhCh3DKnMeQqfL8LX7I" alt="Aryaa Bhadane">
+                </div>
+                <div class="card-details">
+                    <h3>Aryaa Bhadane</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/Aryaabhadane21/HTML-CSS" target="_blank">Github Link</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D4D03AQHlAaL-oRqRwg/profile-displayphoto-crop_800_800/B4DZxqmcUTJkAI-/0/1771314991349?e=1772668800&v=beta&t=LXUruQiraANRvqL9OnQgLe8tX90wApvzDDuSSZsErDY" alt="Vaishnavi Sankhala">
+                </div>
+                <div class="card-details">
+                    <h3>Vaishnavi Sankhala</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/kvaishnavisankhala7-sys/html_unique-tags" target="_blank">Github Link</a>
+                        <a href="https://kvaishnavisankhala7-sys.github.io/html_unique-tag/" target="_blank">Live Demo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D4D03AQE-tqt-0M6X4w/profile-displayphoto-crop_800_800/B4DZxq4inVJkAM-/0/1771319735444?e=1772668800&v=beta&t=CXYHOJYmcAm0AcdKFPvNeu7oVgnWHbZxEJKJWHOcyyM" alt="Saiyash Poojari">
+                </div>
+                <div class="card-details">
+                    <h3>Saiyash Poojari</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/saiyash07/no-break-html.git" target="_blank">Github Link</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D5603AQGkQUR2EhRbKA/profile-displayphoto-crop_800_800/B56Zxq64bdJQAI-/0/1771320347570?e=1772668800&v=beta&t=9fA94i8GBPO6IQ_TXDqHDBHF--jbVYsuUpS7piv8Kfk" alt="Ninad Deodhare">
+                </div>
+                <div class="card-details">
+                    <h3>Ninad Deodhare</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/ninad2008/tasks" target="_blank">Github Link</a>
+                        <a href="https://tasks-wuml-o8l2ulnpo-ninad2008s-projects.vercel.app/" target="_blank">Live Demo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D5635AQF5vZPARjVxnQ/profile-framedphoto-shrink_800_800/B56Zj2FpKxHIAg-/0/1756475332095?e=1771927200&v=beta&t=9LcP7KZ_NYU1P7vcE5Isd76a8GN86RKimdLlDoSncAw" alt="Ayush Kumar Singh">
+                </div>
+                <div class="card-details">
+                    <h3>Ayush Kumar Singh</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/DevGr8/HTMLTagInfo" target="_blank">Github Link</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D5635AQHzSQHhuC_N-Q/profile-framedphoto-shrink_800_800/B56ZtACnZRG4Ag-/0/1766305986473?e=1771927200&v=beta&t=zbFPTy3XQ5WBvDq9FXXzwWActxqvtekzEIqUOaPuU5Q" alt="Jui Tawade">
+                </div>
+                <div class="card-details">
+                    <h3>Jui Tawade</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/juitawde/unique_tags-html.git" target="_blank">Github Link</a>
+                        <a href="https://juitawde.github.io/unique.tags/" target="_blank">Live Demo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D4E35AQGoggxPi43rcw/profile-framedphoto-shrink_800_800/B4EZkAsNNkGwAs-/0/1756653212811?e=1771927200&v=beta&t=uqIVKoyvLJFJgogv4l8UNymShywbM--NcwTN0jnnl98" alt="Rishi Thakker">
+                </div>
+                <div class="card-details">
+                    <h3>Rishi Thakker</h3>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D4D03AQHyDFYauX01Mg/profile-displayphoto-crop_800_800/B4DZxq5SnGJkAM-/0/1771319933136?e=1772668800&v=beta&t=EnUFpY4dBx61_jZE65ca0kXJwztQ2Y7Ycp6kAma5Bkc" alt="Pari Gothi">
+                </div>
+                <div class="card-details">
+                    <h3>Pari Gothi</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/Parii22/-search-tag-and-popover-attribute-" target="_blank">Github Link</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D4E03AQHizXDo5-dtsQ/profile-displayphoto-crop_800_800/B4EZljasrOIoAI-/0/1758309568788?e=1773273600&v=beta&t=FCiA79-vIKDCzslde6QTGRQLxW6qJOQIGmY6ZhfQPbE" alt="Harish Malviya">
+                </div>
+                <div class="card-details">
+                    <h3>Harish Malviya</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/harish0stack/Unique-html-tags/tree/main" target="_blank">Github Link</a>
+                        <a href="https://harish0stack.github.io/Unique-html-tags/" target="_blank">Live Demo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D4D03AQF9RrBgjnH_SA/profile-displayphoto-crop_800_800/B4DZxvRg9gGUAI-/0/1771393395729?e=1773273600&v=beta&t=y8yEgUjBFlzFh1GkaxBFrFm8inrFWYlARcBGZSABHVQ" alt="Anant Dhoundiyal">
+                </div>
+                <div class="card-details">
+                    <h3>Anant Dhoundiyal</h3>
+                    <div class="links-container">
+                        <a href="https://github.com/anantdhoundiyal" target="_blank">Github Link</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D5603AQFyZM3KA7t4Tg/profile-displayphoto-scale_400_400/B56Zso6LkuHAAg-/0/1765917900546?e=1773273600&v=beta&t=Bwcg-_Q2uphDUyc7m6X_hA5cNBr52JI7fCwl3qeGttA" alt="Hazel Lakshmana">
+                </div>
+                <div class="card-details">
+                    <h3>Hazel Lakshmana</h3>
+                    <div class="links-container">
+                        <a href="ttps://github.com/hazelnutbytes" target="_blank">Github Link</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D5603AQH2CSGuDQtyLg/profile-displayphoto-crop_800_800/B56Zx2aU1wJAAI-/0/1771513142511?e=1773273600&v=beta&t=KK5TCkpQfNWbrTIUM0VVXtc5OCV19MONaa34Q2brTEM" alt="Saudamini Nayak">
+                </div>
+                <div class="card-details">
+                    <h3>Saudamini Nayak</h3>
+                    <div class="links-container">
+                        <a href="https://github.com" target="_blank">Github Link</a>
+                        <a href="https://saudamini-stackk.github.io/rare-tag-htmltask/ " target="_blank">Live Demo</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-wrapper">
+                    <img class="card-img" src="https://media.licdn.com/dms/image/v2/D4D03AQGSdXwx_Oj2Bg/profile-displayphoto-crop_800_800/B4DZvhlaxmJMAI-/0/1769016245493?e=1773273600&v=beta&t=OdGXKDJWQk5j4uX0Y6cjN15khtIVM7hgT2wPd3SERP0" alt="Yuvraj Singh">
+                </div>
+                <div class="card-details">
+                    <h3>Yuvraj Singh</h3>
+                    <div class="links-container">
+                        <a href="https://github.com" target="_blank">Github Link</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <p>THE ARCHITECTS -- <span>ITM SKILL UNIVERSITY</span></p>
+    </footer>
+
+</body>
+</html>
